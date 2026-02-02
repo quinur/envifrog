@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "envifrog"
+version = "0.1.0"
+authors = [
+  { name="...", email="..." },
+]
+description = "Slim, zero-dependency type-safe environment configuration for Python."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["env", "config", "settings", "validation", "typing"]
+
+[project.urls]
+"Homepage" = "..."
+"Bug Tracker" = "..."
