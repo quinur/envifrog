@@ -306,7 +306,7 @@ class BaseConfig:
             desc = ""
             
             # Clean type name
-            type_name = str(typ).replace("typing.", "")
+            type_name = str(typ).replace("typing.", "").replace("pathlib.", "")
             if hasattr(typ, '__name__') and not getattr(typ, "__origin__", None):
                  type_name = typ.__name__
             

@@ -4,23 +4,35 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "envifrog"
-version = "0.2.0"
+version = "1.0.0"
 authors = [
-  { name="...", email="..." },
+  { name="AmebaCoder"},
 ]
 description = "Slim, zero-dependency type-safe environment configuration for Python."
 readme = "README.md"
 requires-python = ">=3.10"
+license = {text = "MIT"}
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 keywords = ["env", "config", "settings", "validation", "typing"]
 
 [project.urls]
-"Homepage" = "..."
-"Bug Tracker" = "..."
+"Homepage" = "https://github.com/quinur/envifrog"
+"Bug Tracker" = "https://github.com/quinur/envifrog/issues"
 
 [project.scripts]
 envifrog = "envifrog.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+

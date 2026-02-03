@@ -90,15 +90,19 @@ def generate_example(args):
             full_name = effective_prefix + name
             default_val = field_val.default
             
-            comment = ""
+            # Type name cleanup
+            t_name = str(_type).replace("typing.", "").replace("pathlib.", "")
+            t_name = t_name.replace("<class '", "").replace("'>", "")
+            
+            comment = f"  # Type: {t_name}"
             if field_val.default is ...:
-                comment = "  # Required"
+                comment += " | Required"
                 val_str = ""
             else:
                 val_str = str(default_val)
             
             if field_val.choices:
-                comment += f"  # Choices: {field_val.choices}"
+                comment += f" | Choices: {field_val.choices}"
                 
             lines.append(f"{full_name}={val_str}{comment}")
             

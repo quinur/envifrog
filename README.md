@@ -1,56 +1,89 @@
 # envifrog 🐸
 
-**envifrog** is a lightweight, high-performance, zero-dependency library for managing environment variables in Python with type safety. It provides a "Pydantic-like" developer experience using standard Python type hints.
+**envifrog** is a lightweight, zero-dependency, type-safe environment configuration library for Python. It leverages modern Python type hints to provide a robust and intuitive developer experience.
 
-## Features
+## ✨ Key Features
 
-- **Zero Dependencies**: Pure Python standard library. No `pydantic` or `python-dotenv`.
-- **Type Safety**: Automatically casts environment variables to your specified types (`int`, `bool`, `list`, etc.).
-- **Fail-Fast**: Validates configuration on initialization.
-- **Secrets Management**: Built-in support for masking secret values.
+- **Zero Dependencies**: Powered entirely by the Python Standard Library.
+- **Type Safety**: Automatic casting to `int`, `bool`, `list`, `tuple`, `pathlib.Path`, and more.
+- **Nested Configurations**: Organize complex settings into nested classes.
+- **Live Reloading**: Watch and reload configuration files at runtime without restarting.
+- **Secrets Management**: Mask sensitive data in logs and string representations.
+- **Validation**: Built-in validators for ranges, choices, and custom logic.
+- **CLI Utility**: Tools to generate `.env.example` and verify configuration health.
+- **Multiple Formats**: Support for `.env`, `.json`, and `.toml` files.
 
-## Installation
+## 🚀 Installation
 
 ```bash
 pip install envifrog
 ```
 
-## Quickstart
+## 📖 Quickstart
 
 Create a `.env` file:
-
 ```env
-DATABASE_URL=postgres://user:pass@localhost:5432/db
+# Server settings
 PORT=8000
 DEBUG=true
+
+# Security
 API_KEY=supersecretkey
+
+# Lists
 ALLOWED_HOSTS=localhost,127.0.0.1
 ```
 
-Define your configuration class:
-
+Define and use your configuration:
 ```python
 from envifrog import BaseConfig, Var
 
 class AppConfig(BaseConfig):
-    DATABASE_URL: str
     PORT: int = Var(default=8080, min_val=1, max_val=65535)
-    DEBUG: bool = Var(default=False)
+    DEBUG: bool = False
     API_KEY: str = Var(secret=True)
-    ALLOWED_HOSTS: list[str] = Var(default=["localhost"])
+    ALLOWED_HOSTS: list[str] = ["localhost"]
 
-# Load configuration
+# Load configuration (supports .env, .json, .toml)
 config = AppConfig(env_path=".env")
 
-print(f"Starting server on port {config.PORT}")
-print(f"Debug mode: {config.DEBUG}")
-print(config)  # Secrets are masked!
-# <AppConfig {'DATABASE_URL': '...', 'PORT': 8000, 'DEBUG': True, 'API_KEY': '********', ...}>
+print(config.PORT)      # 8000
+print(config.DEBUG)     # True
+print(config.API_KEY)   # Masked in repr/str
 ```
 
-## Why Envifrog?
+## 🛠️ Advanced Usage
 
-Most projects pull in heavy dependencies just to read a few environment variables. `envifrog` solves this by being:
-1.  **Small**: It's just a few files of pure Python.
-2.  **Fast**: No complex validation schemas overhead.
-3.  **Modern**: Leverages Python 3.10+ features.
+### Nested Configs
+```python
+class DBConfig(BaseConfig):
+    HOST: str = "localhost"
+    PORT: int = 5432
+
+class Config(BaseConfig):
+    DB: DBConfig = Var(prefix="DATABASE_") # Loads DATABASE_HOST, DATABASE_PORT
+```
+
+### Live Reloading
+```python
+config = AppConfig(env_path=".env")
+config.watch(lambda c: print(f"Config reloaded! New port: {c.PORT}"))
+```
+
+### CLI Support
+```bash
+# Generate an example .env file
+envifrog generate-example config.py MyConfig > .env.example
+
+# Check if configuration is valid
+envifrog check config.py MyConfig --env-file .env
+```
+
+## 📄 Documentation
+
+For detailed documentation on all features, please see the [docs/](docs/) directory.
+
+## ⚖️ License
+
+MIT License. See [LICENSE](LICENSE) for details.
+

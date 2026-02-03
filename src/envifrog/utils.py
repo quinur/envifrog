@@ -96,6 +96,19 @@ def _parse_env(path: str) -> Dict[str, str]:
                     key = key.strip()
                     value = value.strip()
                     
+                    # Handle inline comments
+                    if '#' in value:
+                        if (value.startswith('"') and '"' in value[1:]) or \
+                           (value.startswith("'") and "'" in value[1:]):
+                            # Potentially has inline comment after quote
+                            quote_char = value[0]
+                            end_idx = value.find(quote_char, 1)
+                            comment_part = value[end_idx+1:].strip()
+                            if comment_part.startswith('#'):
+                                value = value[:end_idx+1]
+                        elif not (value.startswith('"') or value.startswith("'")):
+                            value = value.split('#', 1)[0].strip()
+
                     # Remove surrounding quotes if present
                     if (value.startswith('"') and value.endswith('"')) or \
                        (value.startswith("'") and value.endswith("'")):
@@ -119,6 +132,11 @@ def cast_value(value: str, target_type: Type[Any]) -> Any:
     if origin is Union:
         # We only support Optional[T] style (Union[T, None]) efficiently
         non_none_args = [arg for arg in args if arg is not type(None)]
+        
+        # If value is empty and Optional, return None
+        if type(None) in args and (value is None or value == ""):
+            return None
+            
         if non_none_args:
             # Try the first non-None type
             target_type = non_none_args[0]
