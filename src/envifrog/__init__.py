@@ -1,6 +1,6 @@
 from .base import BaseConfig
 from .fields import Var
-from .exceptions import EnvifrogError, MissingVariableError, ValidationError, TypeCastingError
+from .exceptions import EnvifrogError, MissingVariableError, ValidationError, TypeCastingError, FrozenInstanceError
 
 __all__ = [
     "BaseConfig",
@@ -9,4 +9,5 @@ __all__ = [
     "MissingVariableError",
     "ValidationError",
     "TypeCastingError",
+    "FrozenInstanceError",
 ]

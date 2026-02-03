@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any, Optional, Callable, List
 
 
 @dataclass
@@ -18,3 +18,6 @@ class Var:
     secret: bool = False
     min_val: Optional[float] = None
     max_val: Optional[float] = None
+    prefix: Optional[str] = None
+    validator: Optional[Any] = None  # Callable[[Any], bool]
+    choices: Optional[list[Any]] = None

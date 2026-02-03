@@ -16,3 +16,8 @@ class ValidationError(EnvifrogError):
 class TypeCastingError(EnvifrogError):
     """Raised when a variable cannot be cast to the specified type."""
     pass
+
+
+class FrozenInstanceError(EnvifrogError):
+    """Raised when attempting to modify a frozen configuration instance."""
+    pass
